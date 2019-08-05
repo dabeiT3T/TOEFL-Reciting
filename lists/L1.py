@@ -157,7 +157,7 @@ L = {
     'attain': {
         'vt.': ['到达', '获得']
     },
-    'consitute': {
+    'constitute': {
         'v.': ['组成', '设立', '制定']
     },
     'unsubstantiated': {
