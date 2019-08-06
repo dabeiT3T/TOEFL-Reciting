@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys, getopt, time, importlib, random
+import sys, getopt, importlib, random
+from colorprint import ColorPrint
 
 def getConfig():
     return getopt.getopt(
@@ -18,7 +19,7 @@ class Dictation:
         self.setConfig(config)
 
     def preInit(self):
-        self._file = utf8stdout = open(1, 'w', encoding='utf-8')
+        self._file = open(1, 'w', encoding='utf-8')
         # dictate chinese
         self._dictFunc = None
         self.dictateCN()
@@ -59,7 +60,7 @@ class Dictation:
             if arg == '--help' or arg == '-h':
                 self.printHelpInfo()
 
-    @staticmethod 
+    @staticmethod
     def printHelpInfo():
         info = '''Usage: toefl ListNum [options]
 
@@ -82,13 +83,15 @@ class Dictation:
         answer = self.getInputAnswer().strip()
         if answer.lower() == 'exit':
             sys.exit()
-        if answer.lower() == word:
-            print('\033[0;32mT\033[0m', end=' ')
+        if answer.lower() == word.lower():
+            ColorPrint.printGreen('T', end=' ')
             self._rightCnt += 1
         else:
-            print('\033[0;31mF\033[0m', end=' ')
+            ColorPrint.printRed('F', end=' ')
             self._wrongCnt += 1
-        print('\033[0;34m'+word+'\033[0m', '=>', answer)
+
+        ColorPrint.printBlue(word, end=' ')
+        print('=>', answer)
 
     def combineFullChinese(self, word):
         string = ''
@@ -114,7 +117,8 @@ class Dictation:
         answer = self.getInputAnswer().strip()
         if answer.lower() == 'exit':
             sys.exit()
-        print('\033[0;34m'+self.combineFullChinese(item)+'\033[0m', file=self._file)
+        ColorPrint.printBlue(self.combineFullChinese(item), file=self._file)
+
 
 
     def printEnglishAnswer(self):
