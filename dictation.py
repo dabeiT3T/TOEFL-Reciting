@@ -62,7 +62,7 @@ class Dictation:
 
     @staticmethod
     def printHelpInfo():
-        info = '''Usage: toefl ListNum [options]
+        info = '''Usage: dictation ListNum [options]
 
   -c             Show chinese meanings while having dictation.
   -e             Show english words while having dictation.
