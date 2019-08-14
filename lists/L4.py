@@ -12,7 +12,7 @@ L = {
     'fungus': {
         'n.': ['真菌', '霉菌']
     },
-    'elaticity': {
+    'elasticity': {
         'n.': ['弹力', '弹性']
     },
     'moisture': {
