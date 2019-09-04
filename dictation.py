@@ -165,7 +165,7 @@ class Dictation:
         if self._random:
             random.shuffle(self._dictation)
 
-        lineNumber = 1
+        lineNumber = 1 if self._start is None else self._start + 1
         for items in self._dictation:
             print(lineNumber, end='. ', flush=True)
             lineNumber += 1
