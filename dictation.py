@@ -8,7 +8,7 @@ def getConfig():
     return getopt.getopt(
         sys.argv[2:], 
         'cehs', 
-        ['lang=', 'partcn', 'help',]
+        ['lang=', 'partcn', 'help', 'range=']
     )[0]
 
 class Dictation:
@@ -28,6 +28,9 @@ class Dictation:
         # statistics
         self._rightCnt = 0
         self._wrongCnt = 0
+        # range
+        self._start  = None
+        self._end    = None
 
     def dictateEN(self):
         # lang
@@ -53,12 +56,23 @@ class Dictation:
                     self.dictateEN()
                 else:
                     self.dictateCN()
+            if arg == '--range':
+                self.setRange(value)
             if arg == '-s':
                 self._random = True
             if arg == '--partcn':
                 self._dictFunc = self.printPartChinese
             if arg == '--help' or arg == '-h':
                 self.printHelpInfo()
+
+    def setRange(self, rangeString):
+        start, end = map(lambda x:  int(x) if x.isdecimal() else False,
+                         rangeString.split(':'))
+        
+        if start:
+            self._start  = start - 1
+        if end:
+            self._end    = end
 
     @staticmethod
     def printHelpInfo():
@@ -72,6 +86,11 @@ class Dictation:
   --lang=[cn|en] Which equals to -c and -e.
   --partcn       Only show one chinese meaning.Only useful with the `-c` or 
                  `--lang=cn` parameter.
+  --range=       Set the range. e.g. --range 12:40, which starts from the
+                 12th word and ends at the 40th word. The default setting
+                 is --range 1:{length of the word list}.You can only set the
+                 start point or end point like :40, which starts from the 1st
+                 word.
 '''
         print(info)
         sys.exit()
@@ -133,11 +152,16 @@ class Dictation:
         print('total:', total)
         print('correct:', self._rightCnt)
         print('wrong:', self._wrongCnt)
-        rate = round(self._rightCnt / total * 100, 2)
+        rate = round(self._rightCnt / total * 100, 2) if total != 0 else 0
         print('correct rate: ', rate, '%', sep='')
 
     def run(self):
-        self._dictation = list(self._wordList)
+        # user sets the range
+        if self._start is None and self._end is None:
+            self._dictation = list(self._wordList)
+        else:
+            self._dictation = list(self._wordList)[self._start:self._end]
+            
         if self._random:
             random.shuffle(self._dictation)
 
