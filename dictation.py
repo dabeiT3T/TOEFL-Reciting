@@ -100,7 +100,8 @@ class Dictation:
 
     def scoreEnglishAnswer(self, word):
         answer = self.getInputAnswer().strip()
-        if answer.lower() == 'exit':
+        if answer.lower() == 'exit' and word != 'exit':
+            self.printStatistics()
             sys.exit()
         if answer.lower() == word.lower():
             ColorPrint.printGreen('T', end=' ')
